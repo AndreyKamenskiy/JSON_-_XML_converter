@@ -12,31 +12,30 @@ public class JsonString extends JsonElement {
     }
 
     @Override
-    protected void loadFromString(StringIndex textIndex) throws IllegalArgumentException {
+    protected void loadFromString(StringIndex i) throws IllegalArgumentException {
         StringBuilder res = new StringBuilder();
-        int i = textIndex.getIndex() + 1;
-        int length = textIndex.getString().length();
+        i.inc();
+        int length = i.getString().length();
         while (true) {
-            if (i == length) {
+            if (i.getIndex() == length) {
                 throw new IllegalArgumentException("JSON string element parsing error: closing quote is absent");
             }
-            char ch = textIndex.getString().charAt(i);
+            char ch = i.getCurrentChar();
             if (ch == '"') {
-                ++i;
+                i.inc();
                 break;
             }
             if (ch == '\\') {
-                ++i;
-                if (i == length) {
+                i.inc();
+                if (i.getIndex() == length) {
                     throw new IllegalArgumentException("JSON string element parsing error: closing quote is absent");
                 }
-                ch = textIndex.getString().charAt(i);
+                ch = i.getCurrentChar();
                 ch = convertJsonEscapeSymbol(ch);
             }
             res.append(ch);
-            ++i;
+            i.inc();
         }
-        textIndex.setIndex(i); // textIndex point to the next element
         this.value = res.toString();
     }
 
