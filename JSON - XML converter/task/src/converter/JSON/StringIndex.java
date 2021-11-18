@@ -8,7 +8,7 @@ public class StringIndex {
         return text;
     }
 
-    public char getCurrentChar(){
+    public char getCurrentChar() {
         return text.charAt(index);
     }
 
@@ -25,7 +25,7 @@ public class StringIndex {
         this.index = index;
     }
 
-    public void inc(){
+    public void inc() {
         ++index;
     }
 

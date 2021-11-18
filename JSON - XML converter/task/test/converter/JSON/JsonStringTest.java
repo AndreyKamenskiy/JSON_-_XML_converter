@@ -1,7 +1,5 @@
 package converter.JSON;
 
-import converter.JSON.JsonString;
-import converter.JSON.StringIndex;
 import junit.framework.TestCase;
 
 public class JsonStringTest extends TestCase {

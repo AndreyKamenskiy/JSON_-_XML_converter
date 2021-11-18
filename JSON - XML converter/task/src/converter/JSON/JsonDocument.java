@@ -17,6 +17,7 @@ public class JsonDocument {
     }
 
     public void load(String jsonString) {
-        //this.root = new JsonElementLoader(jsonString, ).getElement();
+        StringIndex index = new StringIndex(0, jsonString);
+        this.root = new JsonElementLoader(index).getElement();
     }
 }
