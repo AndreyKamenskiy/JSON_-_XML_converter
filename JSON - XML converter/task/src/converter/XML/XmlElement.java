@@ -2,6 +2,8 @@ package converter.XML;
 
 import converter.JSON.StringIndex;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -13,10 +15,10 @@ public class XmlElement {
     final private String ERROR_PREFIX = "XML element parsing error: ";
 
     private String name;
-    private final Map<String, String> attr = null;
+    private Map<String, String> attr = null;
     //TODO: change String to Object or something like ContentType
     //      to take ability to wrap another XmlElement to content
-    private final List<String> content = null;
+    private List<String> content = null;
     private boolean hasEndTag;
 
     public XmlElement(StringIndex index) throws IllegalArgumentException {
@@ -28,6 +30,7 @@ public class XmlElement {
             return;
         }
         //todo: make content loading more complex. https://www.w3.org/TR/xml/#NT-content
+        content = new ArrayList<>();
         this.content.add(loadCharData(index)); //now just CharData content is available
         loadEndTag(index);
     }
@@ -50,6 +53,40 @@ public class XmlElement {
 
     public boolean hasAttributes() {
         return attr != null && !attr.isEmpty();
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder res = new StringBuilder();
+        res.append('<');
+        res.append(name);
+        if (hasAttributes()) {
+            for (Map.Entry<String, String> attribute : attr.entrySet()) {
+                res.append(' ');
+                res.append(attribute.getKey());
+                res.append(' ');
+                res.append('=');
+                res.append(' ');
+                res.append('"');
+                res.append(attribute.getValue());
+                res.append('"');
+            }
+            res.append(' ');
+        }
+        if (hasContent()) {
+            res.append(">");
+            for (Object s : content) {
+                res.append(s.toString());
+            }
+            res.append(">/");
+            res.append(name);
+            res.append('>');
+
+        } else {
+            res.append("/>");
+        }
+
+        return res.toString();
     }
 
     private void loadStartTagAndAttributes(StringIndex index) throws IllegalArgumentException {
@@ -91,8 +128,8 @@ public class XmlElement {
         index.inc();
         for (char ch : name.toCharArray()) {
             checkCurrentChar(index, ch, ERROR_PREFIX + "Start tag and End tag names does not equals. ");
+            index.inc();
         }
-        index.inc();
         skipSChars(index);
         checkCurrentChar(index, '>', ERROR_PREFIX);
     }
@@ -101,12 +138,14 @@ public class XmlElement {
         // https://www.w3.org/TR/xml/#NT-Attribute
         // 	Attribute	   ::=   	Name Eq AttValue
         // index point to first char of Name
+        attr = new HashMap<>();
         while ("/>".indexOf(index.getCurrentChar()) == -1) {
             String attrName = loadName(index);
             // https://www.w3.org/TR/xml/#NT-Eq
             // Eq	   ::=   	S? '=' S?
             skipSChars(index);
             checkCurrentChar(index, '=', ERROR_PREFIX);
+            index.inc();
             skipSChars(index);
             String attrValue = loadAttrValue(index);
             attr.put(attrName, attrValue);
@@ -119,12 +158,15 @@ public class XmlElement {
         // the index must point to the first AttrValue char
         //TODO: add Reference providing.
         checkCurrentChar(index, '"', ERROR_PREFIX);
+        index.inc();
         StringBuilder attrValue = new StringBuilder();
         while ("<&\"".indexOf(index.getCurrentChar()) == -1) {
             attrValue.append(index.getCurrentChar());
             index.inc();
         }
         checkCurrentChar(index, '"', ERROR_PREFIX);
+        index.inc();
+        skipSChars(index);
         return attrValue.toString();
     }
 
@@ -187,7 +229,7 @@ public class XmlElement {
                 (ch >= 0xC0 && ch <= 0xD6) || (ch >= 0xD8 && ch <= 0xF6) ||
                 (ch >= 0xF8 && ch <= 0x2FF) || (ch >= 0x2C00 && ch <= 0x2FEF) ||
                 (ch >= 0x3001 && ch <= 0xD7FF) || (ch >= 0xF900 && ch <= 0xFDCF) ||
-                (ch >= 0xFDF0 && ch <= 0xFFFD) || (ch >= 0x10000 && ch <= 0xEFFFF);
+                (ch >= 0xFDF0 && ch <= 0xFFFD);
     }
 
     private boolean isNameChar(char ch) {

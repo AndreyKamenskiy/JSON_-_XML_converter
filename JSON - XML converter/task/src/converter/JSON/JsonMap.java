@@ -48,7 +48,6 @@ public class JsonMap extends JsonElement {
         }
     }
 
-
     @Override
     protected String getString() {
         //TODO: add formatted print
