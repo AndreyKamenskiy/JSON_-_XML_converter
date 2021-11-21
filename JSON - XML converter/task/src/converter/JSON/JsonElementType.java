@@ -1,11 +1,10 @@
 package converter.JSON;
 
-public enum JsonElementTypes {
+public enum JsonElementType {
     MAP,
     ARRAY,
     STRING,
     BOOLEAN,
     NULL,
-    INTEGER,
-    DOUBLE
+    NUMBER
 }
