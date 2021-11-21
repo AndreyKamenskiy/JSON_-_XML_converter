@@ -92,7 +92,7 @@ public class XmlElement {
     private void loadStartTagAndAttributes(StringIndex index) throws IllegalArgumentException {
         // https://www.w3.org/TR/xml/#NT-STag
         // 	STag ::= '<' Name (S Attribute)* S? '>'
-        checkCurrentChar(index, '<', ERROR_PREFIX);
+        index.checkCurrentChar('<', ERROR_PREFIX);
         index.inc();
         name = loadName(index);
         skipSChars(index);
@@ -108,7 +108,7 @@ public class XmlElement {
         } else if (ch == '/') {
             //load '>'
             index.inc();
-            checkCurrentChar(index, '>', ERROR_PREFIX);
+            index.checkCurrentChar('>', ERROR_PREFIX);
             index.inc();
             hasEndTag = false;
         } else {
@@ -122,16 +122,16 @@ public class XmlElement {
         // end tag format ETag ::= '</' Name S? '>'
         // https://www.w3.org/TR/xml/#sec-starttags
         //index must point to '<'
-        checkCurrentChar(index, '<', ERROR_PREFIX);
+        index.checkCurrentChar('<', ERROR_PREFIX);
         index.inc();
-        checkCurrentChar(index, '/', ERROR_PREFIX);
+        index.checkCurrentChar('/', ERROR_PREFIX);
         index.inc();
         for (char ch : name.toCharArray()) {
-            checkCurrentChar(index, ch, ERROR_PREFIX + "Start tag and End tag names does not equals. ");
+            index.checkCurrentChar(ch, ERROR_PREFIX + "Start tag and End tag names does not equals. ");
             index.inc();
         }
         skipSChars(index);
-        checkCurrentChar(index, '>', ERROR_PREFIX);
+        index.checkCurrentChar('>', ERROR_PREFIX);
     }
 
     private void loadAttributes(StringIndex index) throws IllegalArgumentException {
@@ -144,7 +144,7 @@ public class XmlElement {
             // https://www.w3.org/TR/xml/#NT-Eq
             // Eq	   ::=   	S? '=' S?
             skipSChars(index);
-            checkCurrentChar(index, '=', ERROR_PREFIX);
+            index.checkCurrentChar('=', ERROR_PREFIX);
             index.inc();
             skipSChars(index);
             String attrValue = loadAttrValue(index);
@@ -157,14 +157,14 @@ public class XmlElement {
         // AttValue	   ::=   	'"' ([^<&"] | Reference)* '"'
         // the index must point to the first AttrValue char
         //TODO: add Reference providing.
-        checkCurrentChar(index, '"', ERROR_PREFIX);
+        index.checkCurrentChar('"', ERROR_PREFIX);
         index.inc();
         StringBuilder attrValue = new StringBuilder();
         while ("<&\"".indexOf(index.getCurrentChar()) == -1) {
             attrValue.append(index.getCurrentChar());
             index.inc();
         }
-        checkCurrentChar(index, '"', ERROR_PREFIX);
+        index.checkCurrentChar('"', ERROR_PREFIX);
         index.inc();
         skipSChars(index);
         return attrValue.toString();
@@ -178,7 +178,7 @@ public class XmlElement {
             charData.append(index.getCurrentChar());
             index.inc();
         }
-        checkCurrentChar(index, '<', ERROR_PREFIX);
+        index.checkCurrentChar('<', ERROR_PREFIX);
         return charData.toString();
     }
 
@@ -241,10 +241,5 @@ public class XmlElement {
                 (ch >= 0x203F && ch <= 0x2040));
     }
 
-    private void checkCurrentChar(StringIndex index, char ch, String errorPrefix) throws IllegalArgumentException {
-        if (index.getCurrentChar() != ch) {
-            throw new IllegalArgumentException(errorPrefix + "illegal character detected. Was needed '" + ch +
-                    "' but received '" + index.getCurrentChar() + "'");
-        }
-    }
+
 }

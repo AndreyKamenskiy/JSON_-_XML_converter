@@ -8,7 +8,10 @@ public class StringIndex {
         return text;
     }
 
-    public char getCurrentChar() {
+    public char getCurrentChar() throws IllegalArgumentException{
+        if (index >= text.length()) {
+            throw new IllegalArgumentException("Unexpected end of string found");
+        }
         return text.charAt(index);
     }
 
@@ -25,7 +28,7 @@ public class StringIndex {
         this.index = index;
     }
 
-    public void inc() {
+    public void inc(){
         ++index;
     }
 
@@ -50,5 +53,14 @@ public class StringIndex {
         return " \t\n\r".indexOf(ch) != -1;
     }
 
+    public void checkCurrentChar(char ch, String errorPrefix) throws IllegalArgumentException {
+        if (getCurrentChar() != ch) {
+            throw new IllegalArgumentException(errorPrefix + "illegal character detected. Was needed '" + ch +
+                    "' but received '" + getCurrentChar() + "'");
+        }
+    }
 
+    public boolean endOfString() {
+        return index == text.length();
+    }
 }
