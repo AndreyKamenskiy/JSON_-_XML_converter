@@ -1,5 +1,7 @@
 package converter.JSON;
 
+import converter.StringIndex;
+
 public class JsonNull extends JsonElement {
 
     public JsonNull(StringIndex stringIndex) {

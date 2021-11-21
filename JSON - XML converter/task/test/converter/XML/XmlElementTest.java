@@ -1,9 +1,8 @@
 package converter.XML;
 
-import converter.JSON.StringIndex;
+import converter.StringIndex;
 import junit.framework.TestCase;
 
-import java.util.HashMap;
 import java.util.Map;
 
 public class XmlElementTest extends TestCase {

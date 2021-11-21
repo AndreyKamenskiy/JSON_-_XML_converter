@@ -1,5 +1,7 @@
 package converter.JSON;
 
+import converter.StringIndex;
+
 /*
     Класс хранит json документ.
  */

@@ -1,5 +1,6 @@
 package converter.JSON;
 
+import converter.StringIndex;
 import junit.framework.TestCase;
 
 public class JsonMapTest extends TestCase {

@@ -1,5 +1,7 @@
 package converter.JSON;
 
+import converter.StringIndex;
+
 public class JsonElementLoader {
     private final JsonElement element;
 

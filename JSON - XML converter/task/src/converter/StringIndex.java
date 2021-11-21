@@ -1,4 +1,4 @@
-package converter.JSON;
+package converter;
 
 public class StringIndex {
     private int index;

@@ -1,6 +1,5 @@
 package converter;
 
-import converter.JSON.StringIndex;
 import converter.XML.XmlElement;
 import junit.framework.TestCase;
 

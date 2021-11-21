@@ -1,5 +1,7 @@
 package converter.JSON;
 
+import converter.StringIndex;
+
 import java.util.HashMap;
 import java.util.Map;
 

@@ -1,6 +1,6 @@
 package converter.XML;
 
-import converter.JSON.StringIndex;
+import converter.StringIndex;
 
 import java.util.ArrayList;
 import java.util.HashMap;

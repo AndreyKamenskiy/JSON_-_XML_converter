@@ -1,5 +1,7 @@
 package converter.JSON;
 
+import converter.StringIndex;
+
 public class JsonNumber extends JsonElement {
     final private String ERROR_PREFIX = "JSON number element parsing error: ";
     private int intValue;
