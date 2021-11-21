@@ -2,7 +2,7 @@ package converter;
 
 public class StringIndex {
     private int index;
-    private String text;
+    private final String text;
 
     public String getString() {
         return text;
@@ -15,17 +15,16 @@ public class StringIndex {
         return text.charAt(index);
     }
 
-    public StringIndex(int index, String text) {
-        this.index = index;
-        this.text = text;
+    public StringIndex(int inputIndex, String inputText) {
+        if (inputIndex < 0 || inputIndex >= inputText.length()) {
+            throw new IllegalArgumentException("StringIndex error: index must be in range [0..str.length]");
+        }
+        index = inputIndex;
+        text = inputText;
     }
 
     public int getIndex() {
         return index;
-    }
-
-    public void setIndex(int index) {
-        this.index = index;
     }
 
     public void inc(){
@@ -60,7 +59,7 @@ public class StringIndex {
         }
     }
 
-    public boolean endOfString() {
-        return index == text.length();
+    public boolean hasChar() {
+        return index < text.length();
     }
 }
