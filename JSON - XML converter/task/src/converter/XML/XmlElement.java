@@ -35,6 +35,13 @@ public class XmlElement {
         loadEndTag(index);
     }
 
+    public XmlElement(String name, Map<String, String> attr, List<String> content) {
+        this.name = name;
+        this.attr = attr;
+        this.content = content;
+        hasEndTag = content != null ? true : false;
+    }
+
     public String getName() {
         return name;
     }
@@ -71,19 +78,18 @@ public class XmlElement {
                 res.append(attribute.getValue());
                 res.append('"');
             }
-            res.append(' ');
         }
         if (hasContent()) {
             res.append(">");
             for (Object s : content) {
                 res.append(s.toString());
             }
-            res.append(">/");
+            res.append("</");
             res.append(name);
             res.append('>');
 
         } else {
-            res.append("/>");
+            res.append(" />");
         }
 
         return res.toString();
