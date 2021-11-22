@@ -1,0 +1,6 @@
+{
+    "employee" : {
+        "@department" : "manager",
+        "#employee" : "Garry Smith"
+    }
+}
