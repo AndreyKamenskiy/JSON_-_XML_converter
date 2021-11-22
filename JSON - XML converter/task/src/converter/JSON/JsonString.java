@@ -5,6 +5,17 @@ import converter.StringIndex;
 public class JsonString extends JsonElement {
     private String value;
 
+    public static String toJsonString(String text) {
+        StringBuilder res = new StringBuilder();
+        res.append("\"");
+        for (char ch : text.toCharArray()) {
+            convertCharToJSON(ch, res);
+        }
+        res.append("\"");
+        return res.toString();
+
+    }
+
     public JsonString(StringIndex stringIndex) {
         super(stringIndex);
     }
@@ -61,7 +72,7 @@ public class JsonString extends JsonElement {
         throw new IllegalArgumentException("Unknown json string escape sequence - \\" + ch);
     }
 
-    private void convertCharToJSON(char ch, StringBuilder res) {
+    private static void convertCharToJSON(char ch, StringBuilder res) {
         final String noConverting = "\"\\/\b\f\n\r\t";
         if (noConverting.indexOf(ch) == -1) {
             res.append(ch);
@@ -99,12 +110,6 @@ public class JsonString extends JsonElement {
 
     @Override
     protected String getString() {
-        StringBuilder res = new StringBuilder();
-        res.append("\"");
-        for (char ch : value.toCharArray()) {
-            convertCharToJSON(ch, res);
-        }
-        res.append("\"");
-        return res.toString();
+        return toJsonString(value);
     }
 }
