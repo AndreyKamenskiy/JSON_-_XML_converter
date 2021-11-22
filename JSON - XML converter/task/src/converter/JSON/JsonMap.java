@@ -72,4 +72,8 @@ public class JsonMap extends JsonElement {
         return res.toString();
     }
 
+    public Map<String, JsonElement> getMap() {
+        return map;
+    }
+
 }
