@@ -1,4 +1,4 @@
-# JSON_-_XML_converter
+# JSON - XML converter
 project from hyperSkill
 https://hyperskill.org/projects/61?track=17
 
